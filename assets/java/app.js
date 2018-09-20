@@ -10,6 +10,10 @@ var config = {
 };
 firebase.initializeApp(config);
 
+// Get a reference to the database service
+var database = firebase.database();
+
+
 // Get elements
 const txtEmail = document.getElementById('txtEmail');
 const txtPassword = document.getElementById('txtPassword');
@@ -28,29 +32,55 @@ btnLogin.addEventListener('click', e => {
     promise.catch(e => console.log(e.message));
 })
 
-btnSignUp.addEventListener('click', e=> {
+btnSignUp.addEventListener('click', e => {
     // Get email and pass
     // TO DO: Validate email
     const email = txtEmail.value;
     const pass = txtPassword.value;
     const auth = firebase.auth();
+
+    let newUser = {
+        email: email,
+        password: pass
+    }
+
     // Create User
     const promise = auth.createUserWithEmailAndPassword(email, pass);
-    promise.catch(e => console.log(e.message));
+    promise.then(function () {
+        var uid = firebase.auth().currentUser.uid;
+        firebase.database().ref().child('accounts').child(uid).set({
+            email: email,
+            userId: uid
+        });
+
+        //database.ref().push(newUser)
+    });
+    promise.catch(e =>
+        console.log(e.message));
 });
 
-btnLogOut.addEventListener('click', e=> {
+btnLogOut.addEventListener('click', e => {
     firebase.auth().signOut();
 })
 
 // Add a realtime authentication listener
 firebase.auth().onAuthStateChanged(firebaseUser => {
-    if(firebaseUser) {
+    if (firebaseUser) {
         console.log(firebaseUser);
     } else {
         console.log('not logged in');
     }
 });
+
+// save the user's profile into Firebase so we can list users,
+// use them in Security and Firebase Rules, and show profiles
+function writeUserData(uid, email) {
+    firebase.database().ref('users/' + uid).set({
+        email: email
+        //some more user data
+    });
+}
+
 
 
 //APIs
