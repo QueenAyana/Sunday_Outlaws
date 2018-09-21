@@ -15,11 +15,14 @@ var database = firebase.database();
 
 
 // Get elements
+var uid = '';
 const txtEmail = document.getElementById('txtEmail');
 const txtPassword = document.getElementById('txtPassword');
 const btnLogin = document.getElementById('btnLogin');
 const btnSignUp = document.getElementById('btnSignUp');
 const btnLogOut = document.getElementById('btnLogOut');
+const txtFav = document.getElementById('fav');
+const btnFav = document.getElementById('btnFav');
 
 // Add login event
 btnLogin.addEventListener('click', e => {
@@ -39,15 +42,15 @@ btnSignUp.addEventListener('click', e => {
     const pass = txtPassword.value;
     const auth = firebase.auth();
 
-    let newUser = {
-        email: email,
-        password: pass
-    }
+    // let newUser = {
+    //     email: email,
+    //     password: pass
+    // }
 
     // Create User
     const promise = auth.createUserWithEmailAndPassword(email, pass);
     promise.then(function () {
-        var uid = firebase.auth().currentUser.uid;
+        uid = firebase.auth().currentUser.uid;
         firebase.database().ref().child('accounts').child(uid).set({
             email: email,
             userId: uid
@@ -66,24 +69,31 @@ btnLogOut.addEventListener('click', e => {
 // Add a realtime authentication listener
 firebase.auth().onAuthStateChanged(firebaseUser => {
     if (firebaseUser) {
-        console.log(firebaseUser);
+        uid = firebase.auth().currentUser.uid;
+        console.log("uid " + uid)
+        // Render to DOM each time the value changes
+        database.ref('favorites/' + uid).on("value", function (snapshot) {
+            console.log("on value1" + snapshot.val().favorite);
+            document.getElementById('display').innerHTML = snapshot.val().favorite;
+        }, function (error) {
+            console.error(error);
+        });
     } else {
         console.log('not logged in');
     }
 });
 
-// save the user's profile into Firebase so we can list users,
-// use them in Security and Firebase Rules, and show profiles
-function writeUserData(uid, email) {
-    firebase.database().ref('users/' + uid).set({
-        email: email
-        //some more user data
+//Get favorite on click event
+btnFav.addEventListener("click", f => {
+    const fav = txtFav.value;
+    firebase.database().ref().child('favorites').child(uid).set({
+        favorite: fav
     });
-}
+})
 
 
 
-//APIs
+//APIs -------------------------------------------------------------------------------------------------------------------------------------------------
 let breed;
 let zip;
 let count = 5;
