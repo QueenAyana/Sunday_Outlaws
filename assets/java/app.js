@@ -103,11 +103,21 @@ $("#submit").on("click", function () {
     $.ajax({
         url: 'http://api.petfinder.com/pet.find?format=json&key=dd6e5fbe664a72d7558652f9ced0762f&animal=dog&location=93111',
         dataType: 'jsonp',
-        success: function (dataWeGotViaJsonp) {
-            console.log(dataWeGotViaJsonp);
+    }).then( function(response) {
+        console.log(response);
+        for (let i = 0; i < count; i++) {
+            let dogInfo = $("<div>");
+            let dogImage = $("<img>").attr("src", response.petfinder.pets.pet[i].media.photos.photo[3].$t);
+            dogInfo.append(dogImage);
+            dogInfo.append("<br>");
+            let dogName = $("<p>").innerHTML = response.petfinder.pets.pet[0].name.$t;
+            dogInfo.append(dogName);
+            dogInfo.append("<br>");
+            let dogAge = $("<p>").innerHTML = response.petfinder.pets.pet[0].age.$t;
+            dogInfo.append(dogAge);
+            $("#petFinder").append(dogInfo); 
         }
-    });
-
+    })
 });
 
 $("#submit2").on("click", function () {
