@@ -118,7 +118,7 @@ let count = 5;
 
 $("#btnSearch").on("click", function () {
     $.ajax({
-        url: 'http://api.petfinder.com/pet.find?format=json&key=dd6e5fbe664a72d7558652f9ced0762f&animal=dog&location=' + zipToSearch + '&count=' + count,
+        url: 'http://api.petfinder.com/pet.find?format=json&key=dd6e5fbe664a72d7558652f9ced0762f&animal=dog&location=' + zipToSearch + '&count=' + count + '&breed=' + selectBreed,
         dataType: 'jsonp',
     }).then( function(response) {
         console.log(response);
@@ -156,7 +156,7 @@ $("#btnSearch").on("click", function () {
 
 function dogImageSearch() {
     $.ajax({
-        url: 'https://dog.ceo/api/breed/' + breed +'/images/random',
+        url: 'https://dog.ceo/api/breed/' + selectBreed +'/images/random',
     }).then(function (response) {
         console.log(response);
     })
@@ -172,7 +172,31 @@ $("#submit3").on("click", function () {
 
 
 
-// Rescue local JS --------------------------------
+// Open drop down
+$("#dropdownMenuButton").on("click", function() {
+    document.getElementById("dogDropDown").classList.toggle("show");
+});
+
+//close drop down
+window.onclick = function(event) {
+    if (!event.target.matches('.dropdown-toggle')) {
+        var dropdowns = document.getElementsByClassName("dropdown-menu");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+}
+
+// Get value from drop down
+$(".dropdown-item").on("click", function(){
+    selectBreed = this.innerHTML;
+    console.log(selectBreed);
+})
+
 
 $("#dropdownMenuButton").onchange = function() {
     count = 5
