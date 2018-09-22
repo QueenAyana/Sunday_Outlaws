@@ -14,37 +14,103 @@
 
 <body>
     <header>
-            <div id="logo">Furry Friend Finder</div>
-        <div>
-            <button type="button" class="btn btn-primary" id="signInBtn" >Sign In</button>
-        </div>
+        <div id="logo">Furry Friend Finder</div>
     </header>
-        <div class="container">
-            <div class="row">
-                <div class="col-4">
-                    <div class="jumbotron" id="jumboBox">
-                        <h1> PAGE NAME</h1>
-                        <p>
-                            this is what our page does ...
-                        </p>
-                        <button type="button" class="btn btn-primary" id="SignUpBtn">Sign Up!</button>
-                        <div>
-                            User Email:
-                            <input type="text" name="userEmail" id="signUpName" class="hide"> 
-                            Password:
-                            <input type="password" name="password" id="signUpPassword" class="hide">
-                            Zip Code:
-                            <input type="number" name="zip" id="signUpZip" class="hide">
-                            <div id="emailError"></div>
-                        </div>
+    <div class="container" id="hiddenAfter">
+        <div class="row">
+            <div class="col-4">
+                <div class="jumbotron" id="jumboBox">
+                    <h1>Arff! Arff!
+                    </h1>
+                    <p>
+                            Welcome to Furry Friend Finder where you can find your next best friend! We offer you the power of choice…well of which breed you love the most. Search through our database of breeds and see which one suits you the best. Then with just one click you can see all the PAWTASTIC Pups that are in your local shelters waiting for your loving arms to take them home!
+                    </p>
+                    <h5>
+                            What are you waiting for silly go Fetch yourself a new Furry Friend… Arff! Arff!
+                    </h5>
+                    <button type="button" class="btn btn-primary" id="signInBtn">Sign In</button>
+                    <button type="button" class="btn btn-primary" id="SignUpBtn">Sign Up!</button>
+                    <div>
+                        User Email:
+                        <input type="email" name="userEmail" id="signUpName" class="hide"> Password:
+                        <input type="password" name="password" id="signUpPassword" class="hide"> Zip Code:
+                        <input type="number" name="zip" id="signUpZip" class="hide">
+                        <div id="emailError"></div>
                     </div>
                 </div>
-                <div class="col-8">
-                    <img src="assets/images/puppy.png" alt="dog picture">
-                </div>
+            </div>
+            <div class="col-8">
+                <img src="assets/images/puppy.png" alt="dog picture">
             </div>
         </div>
     </div>
+    <div class="jumbotron" id="jumboPage" style="color: cadetblue">
+            <div class="container" id="hiddenBefore">
+                <div class="row">
+                    <div class="col-6" id="searchBox">
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                aria-expanded="true">
+                                Choose your Breed
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="#">Affenpinscher</a>
+                                <a class="dropdown-item" href="#">Akita</a>
+                                <a class="dropdown-item" href="#">Basenji</a>
+                                <a class="dropdown-item" href="#">Beagle</a>
+                                <a class="dropdown-item" href="#">Borzoi</a>
+                                <a class="dropdown-item" href="#">Briard</a>
+                                <a class="dropdown-item" href="#">Chihuahua</a>
+                                <a class="dropdown-item" href="#">Cockapoo</a>
+                                <a class="dropdown-item" href="#">Collie</a>
+                                <a class="dropdown-item" href="#">Coonhound</a>
+                                <a class="dropdown-item" href="#">Corgi</a>
+                                <a class="dropdown-item" href="#">Dachshund</a>
+                                <a class="dropdown-item" href="#">Dalmatian</a>
+                                <a class="dropdown-item" href="#">Entlebucher</a>
+                                <a class="dropdown-item" href="#">Greyhound</a>
+                                <a class="dropdown-item" href="#">Husky</a>
+                                <a class="dropdown-item" href="#">Keeshond</a>
+                                <a class="dropdown-item" href="#">Komondor</a>
+                                <a class="dropdown-item" href="#">Kuvasz</a>
+                                <a class="dropdown-item" href="#">Maltese</a>
+                                <a class="dropdown-item" href="#">Mastiff</a>
+                                <a class="dropdown-item" href="#">Otterhound</a>
+                                <a class="dropdown-item" href="#">Papillon</a>
+                                <a class="dropdown-item" href="#">Pointer</a>
+                                <a class="dropdown-item" href="#">Pomeranian</a>
+                                <a class="dropdown-item" href="#">Poodle</a>
+                                <a class="dropdown-item" href="#">Pug</a>
+                                <a class="dropdown-item" href="#">Retriever</a>
+                                <a class="dropdown-item" href="#">Rottweiler</a>
+                                <a class="dropdown-item" href="#">Saluki</a>
+                                <a class="dropdown-item" href="#">Samoyed</a>
+                                <a class="dropdown-item" href="#">Schipperke</a>
+                                <a class="dropdown-item" href="#">Schnauzer</a>
+                                <a class="dropdown-item" href="#">Setter</a>
+                                <a class="dropdown-item" href="#">Spaniel</a>
+                                <a class="dropdown-item" href="#">Terrier</a>
+                                <a class="dropdown-item" href="#">Vizsla</a>
+                                <a class="dropdown-item" href="#">Weimaraner</a>
+                                <a class="dropdown-item" href="#">Whippet</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card" id="pastSearches">
+                        <div class="col-6">
+                            <div id="dogPic">picture of dog</div>
+                            <div id="wiki">stuff about dog</div>
+                            <div>
+                                <button type="button" class="btn btn-primary" id="btnSearch">Search for a rescue Pup!</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-primary" id="logOutBtn">Log Out</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     <script> src = "assets/java/app.js"</script>
 </body>
 
