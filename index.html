@@ -45,20 +45,22 @@
                     <button type="button" class="btn btn-primary" id="SignUpBtn">Sign Up!</button>
                     <div>
                         <form>
-                            <div class="form-group">
+                            <div class="form-group" id="emailForm">
                                 <label for="formGroupExampleInput">User Email</label>
-                                <input type="email" class="form-control" id="signUpNamet">
+                                <input type="email" class="form-control" id="signUpName">
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" id="passwordForm">
                                 <label for="formGroupExampleInput2">Password</label>
                                 <input type="password" class="form-control" id="signUpPassword">
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" id="zipForm">
                                 <label for="formGroupExampleInput2">Zip Code</label>
                                 <input type="text" class="form-control" id="signUpZip">
                             </div>
                         </form>
-                        <button type="button" class="btn btn-primary" id="submitBtn">Submit!</button>
+                        <div id="signInError"></div>
+                        <button type="button" class="btn btn-primary" id="signUpSubmit">Submit!</button>
+                        <button type="button" class="btn btn-primary" id="loginSubmit">Submit!</button>
 
                         <div id="emailError"></div>
                     </div>
@@ -82,7 +84,6 @@
                             <a class="dropdown-item" href="#">Affenpinscher</a>
                             <a class="dropdown-item" href="#">Akita</a>
                             <a class="dropdown-item" href="#">Basenji</a>
-                            <a class="dropdown-item" href="#">Beagle</a>
                             <a class="dropdown-item" href="#">Borzoi</a>
                             <a class="dropdown-item" href="#">Briard</a>
                             <a class="dropdown-item" href="#">Chihuahua</a>
@@ -126,6 +127,7 @@
                         <div id="dogPic"></div>
                         <div id="wiki"></div>
                         <div>
+                            <button type="button" class="btn btn-primary" id="nextImage">Next Image</button>
                             <button type="button" class="btn btn-primary" id="btnSearch">Search for a rescue Pup!</button>
                         </div>
                     </div>
@@ -134,16 +136,13 @@
                     <button type="button" class="btn btn-primary" id="logOutBtn">Log Out</button>
                 </div>
             </div>
-            <div class="col-8">
-                <img src="assets/images/puppy.png" alt="dog picture">
-            </div>
         </div>
     </div>
     <div id="rescueDogs"></div>
     <div id="moreRescues">
             <button type="button" class="btn btn-primary" id="moreRescueBtn">See More Pups</button>
     </div>
-    <script> src = "assets/java/app.js"</script>
+    <script src="assets/java/app.js"></script>
 </body>
 
 </html>
