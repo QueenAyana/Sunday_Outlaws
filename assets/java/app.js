@@ -26,6 +26,8 @@ const btnLogOut = document.getElementById('logOutBtn');
 // const txtFav = document.getElementById('fav');
 // const btnFav = document.getElementById('btnFav');
 
+var favArray = [];
+var dogArray = [];
 var zipToSearch;
 
 // Add login event
@@ -86,16 +88,46 @@ firebase.auth().onAuthStateChanged(firebaseUser => {
             zipToSearch =  snapshot.val().zip;
         });
         // Render to DOM each time the value changes
-        // database.ref('favorites/' + uid).on("value", function (snapshot) {
-        //     console.log("on value1" + snapshot.val().favorite);
-        //     document.getElementById('display').innerHTML = snapshot.val().favorite;
-        // }, function (error) {
-        //     console.error(error);
-        // });
+        database.ref('favorites/' + uid).on("value", function (snapshot) {
+            $("#favorites").empty();
+             favArray = JSON.parse(snapshot.val().favorite);
+             for (let i = 0; i < favArray.length; i++) {
+                let dogInfo2 = $("<div>");
+                let dogImage2 = $("<img>").attr("src", favArray[i].image);
+                dogInfo2.append(dogImage2);
+                dogInfo2.append("<br>");
+                let dogName2 = $("<p>").innerHTML = favArray[i].name;
+                dogInfo2.append(dogName2);
+                dogInfo2.append("<br>");
+                let dogAge2 = $("<p>").innerHTML = favArray[i].age;
+                dogInfo2.append(dogAge2);
+                dogInfo2.append("<br>");
+                let dogAddress2 = $("<p>").innerHTML = favArray[i].address;
+                dogInfo2.append(dogAddress2);
+                dogInfo2.append("<br>");
+                let dogCityState2  = $("<p>").innerHTML = favArray[i].city;
+                dogInfo2.append(dogCityState2);
+                dogInfo2.append("<br>");
+                let dogPhone2 = $("<p>").innerHTML = favArray[i].phone;
+                dogInfo2.append(dogPhone2);
+                dogInfo2.append("<br>");
+                let dogEmail2 = $("<p>").innerHTML = favArray[i].email;
+                dogInfo2.append(dogEmail2);
+                dogInfo2.append("<br>");
+                let delTag = $("<button>").html("Remove from favorites");
+                delTag.attr("type", "button").attr("data-index", + i).attr("id", "btnDel");
+                dogInfo2.append(delTag);
+
+                $("#favorites").append(dogInfo2);
+                 
+             }
+         }, function (error) {
+             console.error(error);
+         });
     } else {
         console.log('not logged in');
         // hide dog search area
-        document.getElementById('jumboPage').style.display = 'none';
+        document.getElementById('secondPage').style.display = 'none';
         //display sign in area
         document.getElementById("hiddenAfter").style.display = 'block';
     }
@@ -127,7 +159,7 @@ firebase.auth().onAuthStateChanged(firebaseUser => {
     $("#dogPic").empty();
     $("#wiki").empty();
     $("#rescueDogs").empty();
-
+    $("#favorites").empty();
  }
 
  window.onload = function() {
@@ -207,6 +239,7 @@ $("#btnSearch").on("click", function () {
     document.getElementById('moreRescueBtn').style.display = 'block';
 });
 
+// Random dog images by breed
 function dogImageSearch() {
     $("#dogPic").empty();
     $.ajax({
@@ -218,6 +251,7 @@ function dogImageSearch() {
     })
 }
 
+// Wiki API that finds summary text
 function dogWiki() {
     $.ajax({
         url: 'https://en.wikipedia.org/api/rest_v1/page/summary/' + breed,
@@ -228,10 +262,30 @@ function dogWiki() {
     })
 }
 
+// Increases the search count by 5 in the petfinder API and re-runs the search function
 $("#moreRescueBtn").on("click", function() {
     count = count + 5;
     rescueSearch();
 });
+
+// Adds favorite to favArray and adds to firebase
+$(document).on("click", "#btnFav", function() {
+    let ind = this.dataset.index
+    favArray.push(dogArray[ind]);
+    firebase.database().ref().child('favorites').child(uid).set({
+                favorite: JSON.stringify(favArray),
+            });
+}); 
+
+// Removes from favArray and resets firebase
+$(document).on("click", "#btnDel", function() {
+    console.log("click");
+    let ind2 = this.dataset.index
+    favArray.splice(ind2, 1);
+    firebase.database().ref().child('favorites').child(uid).set({
+        favorite: JSON.stringify(favArray),
+    });
+})
 
 function rescueSearch() {
     $("#rescueDogs").empty();
@@ -254,7 +308,7 @@ function rescueSearch() {
             let dogAddress = $("<p>").innerHTML = response.petfinder.pets.pet[i].contact.address1.$t;
             dogInfo.append(dogAddress);
             dogInfo.append("<br>");
-            let dogCityState  = $("<p>").innerHTML = `${response.petfinder.pets.pet[i].contact.city.$t}, ${response.petfinder.pets.pet[i].contact.state.$t} ${response.petfinder.pets.pet[i].contact.zip.$t}`
+            let dogCityState  = $("<p>").innerHTML = `${response.petfinder.pets.pet[i].contact.city.$t}, ${response.petfinder.pets.pet[i].contact.state.$t} ${response.petfinder.pets.pet[i].contact.zip.$t}`;
             dogInfo.append(dogCityState);
             dogInfo.append("<br>");
             let dogPhone = $("<p>").innerHTML = response.petfinder.pets.pet[i].contact.phone.$t;
@@ -262,6 +316,24 @@ function rescueSearch() {
             dogInfo.append("<br>");
             let dogEmail = $("<p>").innerHTML = response.petfinder.pets.pet[i].contact.email.$t;
             dogInfo.append(dogEmail);
+            dogInfo.append("<br>");
+            let favTag = $("<button>").html("Add to favorites");
+            favTag.attr("type", "button").attr("data-index", + i).attr("id", "btnFav");
+            dogInfo.append(favTag);
+
+            let dogList = {
+                image: response.petfinder.pets.pet[i].media.photos.photo[3].$t,
+                name: dogName,
+                age: dogAge,
+                address: dogAddress,
+                city: dogCityState,
+                phone: dogPhone,
+                email: dogEmail,
+            }
+
+            dogArray.push(dogList);
+            console.log(dogArray);
+
             $("#rescueDogs").append(dogInfo); 
         }
     })
