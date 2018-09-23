@@ -81,7 +81,7 @@ firebase.auth().onAuthStateChanged(firebaseUser => {
         // hide sign in area
         document.getElementById("hiddenAfter").style.display = 'none';
         // display dog search area
-        document.getElementById('jumboPage').style.display = 'block';
+        document.getElementById('secondPage').style.display = 'block';
         // set active user zip code
         database.ref('accounts/' + uid).on("value", function (snapshot) {
             console.log("pulling zip " +  snapshot.val().zip);
