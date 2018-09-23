@@ -10,6 +10,7 @@ var config = {
 };
 firebase.initializeApp(config);
 
+
 // Get a reference to the database service
 var database = firebase.database();
 
@@ -19,12 +20,14 @@ var uid = '';
 var txtZip = document.getElementById('signUpZip')
 const txtEmail = document.getElementById('signUpName');
 const txtPassword = document.getElementById('signUpPassword');
-const btnLogin = document.getElementById('signInBtn');
-const btnSignUp = document.getElementById('SignUpBtn');
+const btnLogin = document.getElementById('loginSubmit');
+const btnSignUp = document.getElementById('signUpSubmit');
 const btnLogOut = document.getElementById('logOutBtn');
 // const txtFav = document.getElementById('fav');
 // const btnFav = document.getElementById('btnFav');
 
+var favArray = [];
+var dogArray = [];
 var zipToSearch;
 
 // Add login event
@@ -33,9 +36,11 @@ btnLogin.addEventListener('click', e => {
     const email = txtEmail.value;
     const pass = txtPassword.value;
     const auth = firebase.auth();
+    $("#signInError").empty();
     // Sign in
     const promise = auth.signInWithEmailAndPassword(email, pass);
-    promise.catch(e => console.log(e.message));
+    promise.catch(e => 
+        $("#signInError").append(e.message));
 })
 
 btnSignUp.addEventListener('click', e => {
@@ -46,29 +51,25 @@ btnSignUp.addEventListener('click', e => {
     const zip = txtZip.value;
     const auth = firebase.auth();
 
-    // let newUser = {
-    //     email: email,
-    //     password: pass
-    // }
-
     // Create User
     const promise = auth.createUserWithEmailAndPassword(email, pass);
     promise.then(function () {
         uid = firebase.auth().currentUser.uid;
+        $("#signInError").empty();
         firebase.database().ref().child('accounts').child(uid).set({
             email: email,
             zip: zip,
             userId: uid
         });
 
-        //database.ref().push(newUser)
     });
     promise.catch(e =>
-        console.log(e.message));
+        $("#signInError").append(e.message));
 });
 
 btnLogOut.addEventListener('click', e => {
     firebase.auth().signOut();
+    clearAll();
 })
 
 // Add a realtime authentication listener
@@ -87,16 +88,46 @@ firebase.auth().onAuthStateChanged(firebaseUser => {
             zipToSearch =  snapshot.val().zip;
         });
         // Render to DOM each time the value changes
-        // database.ref('favorites/' + uid).on("value", function (snapshot) {
-        //     console.log("on value1" + snapshot.val().favorite);
-        //     document.getElementById('display').innerHTML = snapshot.val().favorite;
-        // }, function (error) {
-        //     console.error(error);
-        // });
+        database.ref('favorites/' + uid).on("value", function (snapshot) {
+            $("#favorites").empty();
+             favArray = JSON.parse(snapshot.val().favorite);
+             for (let i = 0; i < favArray.length; i++) {
+                let dogInfo2 = $("<div>");
+                let dogImage2 = $("<img>").attr("src", favArray[i].image);
+                dogInfo2.append(dogImage2);
+                dogInfo2.append("<br>");
+                let dogName2 = $("<p>").innerHTML = favArray[i].name;
+                dogInfo2.append(dogName2);
+                dogInfo2.append("<br>");
+                let dogAge2 = $("<p>").innerHTML = favArray[i].age;
+                dogInfo2.append(dogAge2);
+                dogInfo2.append("<br>");
+                let dogAddress2 = $("<p>").innerHTML = favArray[i].address;
+                dogInfo2.append(dogAddress2);
+                dogInfo2.append("<br>");
+                let dogCityState2  = $("<p>").innerHTML = favArray[i].city;
+                dogInfo2.append(dogCityState2);
+                dogInfo2.append("<br>");
+                let dogPhone2 = $("<p>").innerHTML = favArray[i].phone;
+                dogInfo2.append(dogPhone2);
+                dogInfo2.append("<br>");
+                let dogEmail2 = $("<p>").innerHTML = favArray[i].email;
+                dogInfo2.append(dogEmail2);
+                dogInfo2.append("<br>");
+                let delTag = $("<button>").html("Remove from favorites");
+                delTag.attr("type", "button").attr("data-index", + i).attr("id", "btnDel");
+                dogInfo2.append(delTag);
+
+                $("#favorites").append(dogInfo2);
+                 
+             }
+         }, function (error) {
+             console.error(error);
+         });
     } else {
         console.log('not logged in');
         // hide dog search area
-        document.getElementById('jumboPage').style.display = 'none';
+        document.getElementById('secondPage').style.display = 'none';
         //display sign in area
         document.getElementById("hiddenAfter").style.display = 'block';
     }
@@ -106,71 +137,62 @@ firebase.auth().onAuthStateChanged(firebaseUser => {
 // btnFav.addEventListener("click", f => {
 //     const fav = txtFav.value;
 //     firebase.database().ref().child('favorites').child(uid).set({
-//         favorite: fav
-//     });
-// })
+    //         favorite: fav
+    //     });
+    // })
 
+ // Clearing Sign In Info --------------------------------------------------------------
 
+ function clearAll() {
+    document.getElementById('moreRescueBtn').style.display = 'none';
+    document.getElementById('nextImage').style.display = 'none';
+    document.getElementById('btnSearch').style.display = 'none';
+    document.getElementById('emailForm').style.display = 'none';
+    document.getElementById('passwordForm').style.display = 'none';
+    document.getElementById('zipForm').style.display = 'none';
+    document.getElementById('signUpSubmit').style.display = 'none';
+    document.getElementById('loginSubmit').style.display = 'none';
+    $('#signUpName').val('');
+    $('#signUpPassword').val('');
+    $('#signUpZip').val('');
+    $("#signInError").empty();
+    $("#dogPic").empty();
+    $("#wiki").empty();
+    $("#rescueDogs").empty();
+    $("#favorites").empty();
+ }
 
-//APIs -------------------------------------------------------------------------------------------------------------------------------------------------
-let breed;
-let count = 5;
+ window.onload = function() {
+clearAll();
+};
 
-$("#btnSearch").on("click", function () {
-    $.ajax({
-        url: 'http://api.petfinder.com/pet.find?format=json&key=dd6e5fbe664a72d7558652f9ced0762f&animal=dog&location=' + zipToSearch + '&count=' + count + '&breed=' + selectBreed,
-        dataType: 'jsonp',
-    }).then( function(response) {
-        console.log(response);
-        for (let i = 0; i < response.petfinder.pets.pet.length; i++) {
-            let dogInfo = $("<div>");
-            let dogImage = $("<img>").attr("src", response.petfinder.pets.pet[i].media.photos.photo[3].$t);
-            dogInfo.append(dogImage);
-            dogInfo.append("<br>");
-            let dogName = $("<p>").innerHTML = response.petfinder.pets.pet[i].name.$t;
-            dogInfo.append(dogName);
-            dogInfo.append("<br>");
-            let dogAge = $("<p>").innerHTML = response.petfinder.pets.pet[i].age.$t;
-            dogInfo.append(dogAge);
-            dogInfo.append("<br>");
-            let dogAddress = $("<p>").innerHTML = response.petfinder.pets.pet[i].contact.address1.$t;
-            dogInfo.append(dogAddress);
-            dogInfo.append("<br>");
-            let dogPhone = $("<p>").innerHTML = response.petfinder.pets.pet[i].contact.phone.$t;
-            dogInfo.append(dogPhone);
-            dogInfo.append("<br>");
-            let dogEmail = $("<p>").innerHTML = response.petfinder.pets.pet[i].contact.email.$t;
-            dogInfo.append(dogEmail);
-            $("#dogPic").append(dogInfo); 
-        }
-    })
+$("#SignUpBtn").on("click", function() {
+    document.getElementById('emailForm').style.display = 'block';
+    document.getElementById('passwordForm').style.display = 'block';
+    document.getElementById('zipForm').style.display = 'block';
+    document.getElementById('signUpSubmit').style.display = 'block';
+    document.getElementById('loginSubmit').style.display = 'none';
+    $('#signUpName').val('');
+    $('#signUpPassword').val('');
+    $('#signUpZip').val('');
+    $("#signInError").empty();
 });
 
-// $("#submit2").on("click", function () {
-//     $.ajax({
-//         url: 'https://dog.ceo/api/breed/hound/images/random',
-//     }).then(function (response) {
-//         console.log(response);
-//     })
-// })
-
-function dogImageSearch() {
-    $.ajax({
-        url: 'https://dog.ceo/api/breed/' + selectBreed +'/images/random',
-    }).then(function (response) {
-        console.log(response);
-    })
-}
-
-$("#submit3").on("click", function () {
-    $.ajax({
-        url: 'https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro&explaintext&redirects=1&titles=akita+dog&origin=*',
-    }).then(function (response) {
-        console.log(response);
-    })
+$("#signInBtn").on("click", function() {
+    document.getElementById('loginSubmit').style.display = 'block';
+    document.getElementById('emailForm').style.display = 'block';
+    document.getElementById('passwordForm').style.display = 'block';
+    document.getElementById('zipForm').style.display = 'none';
+    document.getElementById('signUpSubmit').style.display = 'none';
+    $('#signUpName').val('');
+    $('#signUpPassword').val('');
+    $('#signUpZip').val('');
+    $("#signInError").empty();
 })
-
-
+    
+    
+//Petfinder -------------------------------------------------------------------------------------------------------------------------------------------------
+let count = 5;
 
 // Open drop down
 $("#dropdownMenuButton").on("click", function() {
@@ -193,14 +215,127 @@ window.onclick = function(event) {
 
 // Get value from drop down
 $(".dropdown-item").on("click", function(){
-    selectBreed = this.innerHTML;
+    $("#dogPic").empty();
+    $("#wiki").empty();
+    $("#rescueDogs").empty();
+    selectBreed = this.textContent;
     console.log(selectBreed);
+    breed = selectBreed.toLowerCase();
+    count = 5
+    dogImageSearch();
+    dogWiki();
+    document.getElementById('moreRescueBtn').style.display = 'none';
+    document.getElementById('nextImage').style.display = 'block';
+    document.getElementById('btnSearch').style.display = 'block';
+   
+});
+
+$("#nextImage").on("click", function() {
+    dogImageSearch();
+});
+
+$("#btnSearch").on("click", function () {
+    rescueSearch();
+    document.getElementById('moreRescueBtn').style.display = 'block';
+});
+
+// Random dog images by breed
+function dogImageSearch() {
+    $("#dogPic").empty();
+    $.ajax({
+        url: 'https://dog.ceo/api/breed/' + breed + '/images/random',
+        method: "GET"
+    }).then(function (response) {
+        let randomPic = $("<img>").attr("src", response.message);
+        $("#dogPic").append(randomPic);
+    })
+}
+
+// Wiki API that finds summary text
+function dogWiki() {
+    $.ajax({
+        url: 'https://en.wikipedia.org/api/rest_v1/page/summary/' + breed,
+    }).then(function (response) {
+        console.log(response);
+        let dogSummary = $("<p>").innerHTML = response.extract
+        $("#wiki").append(dogSummary);
+    })
+}
+
+// Increases the search count by 5 in the petfinder API and re-runs the search function
+$("#moreRescueBtn").on("click", function() {
+    count = count + 5;
+    rescueSearch();
+});
+
+// Adds favorite to favArray and adds to firebase
+$(document).on("click", "#btnFav", function() {
+    let ind = this.dataset.index
+    favArray.push(dogArray[ind]);
+    firebase.database().ref().child('favorites').child(uid).set({
+                favorite: JSON.stringify(favArray),
+            });
+}); 
+
+// Removes from favArray and resets firebase
+$(document).on("click", "#btnDel", function() {
+    console.log("click");
+    let ind2 = this.dataset.index
+    favArray.splice(ind2, 1);
+    firebase.database().ref().child('favorites').child(uid).set({
+        favorite: JSON.stringify(favArray),
+    });
 })
 
+function rescueSearch() {
+    $("#rescueDogs").empty();
+    $.ajax({
+        url: 'http://api.petfinder.com/pet.find?format=json&key=dd6e5fbe664a72d7558652f9ced0762f&animal=dog&location=' + zipToSearch + '&count=' + count + '&breed=' + selectBreed,
+        dataType: 'jsonp',
+    }).then( function(response) {
+        console.log(response);
+        for (let i = 0; i < response.petfinder.pets.pet.length; i++) {
+            let dogInfo = $("<div>");
+            let dogImage = $("<img>").attr("src", response.petfinder.pets.pet[i].media.photos.photo[3].$t);
+            dogInfo.append(dogImage);
+            dogInfo.append("<br>");
+            let dogName = $("<p>").innerHTML = response.petfinder.pets.pet[i].name.$t;
+            dogInfo.append(dogName);
+            dogInfo.append("<br>");
+            let dogAge = $("<p>").innerHTML = response.petfinder.pets.pet[i].age.$t;
+            dogInfo.append(dogAge);
+            dogInfo.append("<br>");
+            let dogAddress = $("<p>").innerHTML = response.petfinder.pets.pet[i].contact.address1.$t;
+            dogInfo.append(dogAddress);
+            dogInfo.append("<br>");
+            let dogCityState  = $("<p>").innerHTML = `${response.petfinder.pets.pet[i].contact.city.$t}, ${response.petfinder.pets.pet[i].contact.state.$t} ${response.petfinder.pets.pet[i].contact.zip.$t}`;
+            dogInfo.append(dogCityState);
+            dogInfo.append("<br>");
+            let dogPhone = $("<p>").innerHTML = response.petfinder.pets.pet[i].contact.phone.$t;
+            dogInfo.append(dogPhone);
+            dogInfo.append("<br>");
+            let dogEmail = $("<p>").innerHTML = response.petfinder.pets.pet[i].contact.email.$t;
+            dogInfo.append(dogEmail);
+            dogInfo.append("<br>");
+            let favTag = $("<button>").html("Add to favorites");
+            favTag.attr("type", "button").attr("data-index", + i).attr("id", "btnFav");
+            dogInfo.append(favTag);
 
-$("#dropdownMenuButton").onchange = function() {
-    count = 5
-    breed = $("#dropdownMenuButton").innerHTML
-    dogImageSearch();
+            let dogList = {
+                image: response.petfinder.pets.pet[i].media.photos.photo[3].$t,
+                name: dogName,
+                age: dogAge,
+                address: dogAddress,
+                city: dogCityState,
+                phone: dogPhone,
+                email: dogEmail,
+            }
+
+            dogArray.push(dogList);
+            console.log(dogArray);
+
+            $("#rescueDogs").append(dogInfo); 
+        }
+    })
 }
 
