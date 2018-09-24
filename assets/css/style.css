@@ -124,7 +124,8 @@ p {
 }
 
 #btnDel {
-    margin-top: 5px;
+    margin-top: 10px;
+    margin-bottom: 20px;
     background-color:#56ADF6;
     color: white;
     font-size: 15px;
@@ -132,7 +133,8 @@ p {
 }
 
 #btnFav {
-    margin-top: 5px;
+    margin-top: 10px;
+    margin-bottom: 20px;
     background-color:#56ADF6;
     color: white;
     font-size: 15px;
