@@ -2,23 +2,32 @@ header {
     color: #56ADF6;    
 }
 
+p {
+    font-family: 'Roboto', sans-serif;
+}
+
 #logo {
     float: left;
-    font-size: 20px;
+    font-size: 30px;
     margin: 21px 0 22px 60px;
 
 }
 
+.mainDogImg {
+    width: 80%;
+}
+
 #signInBtn {
-    float: right;
-    margin: 15px 60px 15px 0;
-    background-color: #56ADF6;
-    border: none;
+    background-color:  white;
+    color: #56ADF6;
+    font-size: 15px;
+    border-width: 2px;
+    border-color: #56ADF6;
 
 }
 
 #jumboBox {
-    margin-top: 295px;
+    margin-top: 40px;
     background-color: white;
     color: #56ADF6;
 }
@@ -30,8 +39,8 @@ header {
 #SignUpBtn {
     background-color: white;
     color: #56ADF6;
-    font-size: 10px;
-    border-width: 1px;
+    font-size: 15px;
+    border-width: 2px;
     border-color: #56ADF6;
 }
 
@@ -41,8 +50,12 @@ header {
     font-size: 20px;                          
 }
 
-.dropdown {
-    margin-top: 60px;
+#dropdownMenuButton {
+    background-color: white;
+    color: #56ADF6 !important;
+    font-size: 15px;
+    border-width: 2px;
+    border-color: #56ADF6;
 }
 
 #pastSearches{
@@ -55,6 +68,73 @@ header {
     border: none;
 }
 
-#dogPic {
-    background-color: #56ADF6;
+#logOutBtn {
+    margin-top: 0px;
+    margin-right: 0px;
+    background-color: white;
+    color: #56ADF6;
+    font-size: 15px;
+    border-width: 2px;
+    border-color: #56ADF6;
+}
+
+#dogPic img{
+    width: 350px !important;
+    height: 400px !important;
+}
+
+#wiki {
+    width: 730px;
+    color: #56ADF6;
+    font: 15px;
+}
+
+#btnContainer {
+    margin: 10px 15px;
+}
+
+#nextImage {
+    margin-top: 20px;
+    background-color:#56ADF6;
+    color: white;
+    font-size: 15px;
+    border: none;
+}
+
+#btnSearch {
+    margin-top: 20px;
+    background-color:#56ADF6;
+    color: white;
+    font-size: 15px;
+}
+
+#rescueDogs {
+    margin-bottom: 5px;
+}
+
+#moreRescueBtn {
+    margin-top: 20px;
+    background-color:#56ADF6;
+    color: white;
+    font-size: 15px;
+}
+
+#favoriteContainer {
+    color: #56ADF6;
+}
+
+#btnDel {
+    margin-top: 5px;
+    background-color:#56ADF6;
+    color: white;
+    font-size: 15px;
+    border: none;
+}
+
+#btnFav {
+    margin-top: 5px;
+    background-color:#56ADF6;
+    color: white;
+    font-size: 15px;
+    border: none;
 }
