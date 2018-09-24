@@ -341,3 +341,4 @@ function rescueSearch() {
         }
     })
 }
+
