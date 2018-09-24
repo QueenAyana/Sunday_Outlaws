@@ -33,7 +33,7 @@ p {
 }
 
 #jumboPage {
-    background-color: white;
+    background-color: transparent;
 }
 
 #SignUpBtn {
@@ -139,4 +139,10 @@ p {
     color: white;
     font-size: 15px;
     border: none;
+}
+
+#secondPage {
+    background-image: url("../images/puppy.png");
+    background-repeat:   no-repeat;
+    background-position: center top 100px;  
 }
