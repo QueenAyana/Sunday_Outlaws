@@ -29,19 +29,23 @@
         <div class="row">
             <div class="col-6">
                 <div class="jumbotron" id="jumboBox">
-                    <h1>Arff! Arff!
-                    </h1>
+                    <h2>Arff! Arff!
+                    </h2>
                     <p>
 
-                        Welcome to Furry Friend Finder where you can find your next best friend! We offer you the power of choice…well of which breed
-                        you love the most. Search through our database of breeds and see which one suits you the best. Then
-                        with just one click you can see all the PAWTASTIC Pups that are in your local shelters waiting for
+                        Welcome to Furry Friend Finder where you can find your next best friend! We offer you the power
+                        of choice…well of which breed
+                        you love the most. Search through our database of breeds and see which one suits you the best.
+                        Then
+                        with just one click you can see all the PAWTASTIC Pups that are in your local shelters waiting
+                        for
                         your loving arms to take them home!
                     </p>
                     <h5>
                         What are you waiting for silly go Fetch yourself a new Furry Friend… Arff! Arff!
                     </h5>
-                    <button type="button" class="btn btn-primary" id="signInBtn" data-toggle="modal" data-target="#exampleModalCenter">Sign In</button>
+                    <button type="button" class="btn btn-primary" id="signInBtn" data-toggle="modal" data-target="#exampleModalCenter">Sign
+                        In</button>
                     <button type="button" class="btn btn-primary" id="SignUpBtn">Sign Up!</button>
                     <div>
                         <form>
@@ -67,7 +71,7 @@
                 </div>
             </div>
             <div class="col-6">
-                <img src="assets/images/puppy.png" alt="dog picture">
+                <img src="assets/images/puppy.png" alt="dog picture" id="mainDogImg">
             </div>
         </div>
     </div>
@@ -75,10 +79,12 @@
         <div class="jumbotron" id="jumboPage" style="color: cadetblue">
             <div class="container" id="hiddenBefore">
                 <div class="row">
-                    <div class="col-6" id="searchBox">
+
+                    <div class="col-2 float-left" id="searchBox">
                         <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-                                aria-expanded="true">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+
                                 Choose your Breed
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="dogDropDown">
@@ -123,33 +129,42 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card" id="pastSearches">
-                        <div class="col-6">
-                            <div id="dogPic"></div>
-                            <div id="wiki"></div>
-                            <div>
-                                <button type="button" class="btn btn-primary" id="nextImage">Next Image</button>
-                                <button type="button" class="btn btn-primary" id="btnSearch">Search for a rescue Pup!</button>
-                            </div>
-                        </div>
+
+                    <div class="col-10 float-right">
+                        <button type="button" class="btn btn-primary float-right" id="logOutBtn">Log Out</button>
+
                     </div>
                     <div>
                         <button type="button" class="btn btn-primary" id="logOutBtn">Log Out</button>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="row">
-            <div class="col-6">
-                <div id="rescueDogs"></div>
-                <div id="moreRescues">
-                    <button type="button" class="btn btn-primary" id="moreRescueBtn">See More Pups</button>
+            <div class="container">
+                <div class="row align-baseline" id="pastSearches">
+                    <div class="col-4 float-left" id="dogPic"></div>
+                    <div class="col-8 float-right" id="wiki"></div>
+                    <div id="btnContainer">
+                        <button type="button" class="btn btn-primary" id="nextImage">Next Image</button>
+                        <button type="button" class="btn btn-primary" id="btnSearch">Search for a rescue Pup!</button>
+                    </div>
                 </div>
             </div>
-            <div class="col-6">
-                <div id="favorites">
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-8">
+                    <div id="rescueDogs"></div>
+                    <div id="moreRescues">
+                        <button type="button" class="btn btn-primary" id="moreRescueBtn">See More Pups</button>
+                    </div>
+                </div>
+                <div class="col-4" id="favoriteContainer">
                     <h3>Favorites</h3>
+                    <div id="favorites">
+                    </div>
+
                 </div>
             </div>
         </div>
