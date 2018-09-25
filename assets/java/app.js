@@ -154,6 +154,7 @@ firebase.auth().onAuthStateChanged(firebaseUser => {
     document.getElementById('zipForm').style.display = 'none';
     document.getElementById('signUpSubmit').style.display = 'none';
     document.getElementById('loginSubmit').style.display = 'none';
+    document.getElementById("rescueContainer").style.visibility = 'hidden';
     $('#signUpName').val('');
     $('#signUpPassword').val('');
     $('#signUpZip').val('');
@@ -199,6 +200,7 @@ let count = 5;
 // Open drop down
 $("#dropdownMenuButton").on("click", function() {
     document.getElementById("dogDropDown").classList.toggle("show");
+    document.getElementById("rescueContainer").style.visibility = 'hidden';
 });
 
 //close drop down
@@ -239,6 +241,7 @@ $("#nextImage").on("click", function() {
 $("#btnSearch").on("click", function () {
     rescueSearch();
     document.getElementById('moreRescueBtn').style.display = 'block';
+    document.getElementById("rescueContainer").style.visibility = 'visible';
 });
 
 // Random dog images by breed
