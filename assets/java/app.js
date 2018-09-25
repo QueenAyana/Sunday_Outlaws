@@ -23,8 +23,6 @@ const txtPassword = document.getElementById('signUpPassword');
 const btnLogin = document.getElementById('loginSubmit');
 const btnSignUp = document.getElementById('signUpSubmit');
 const btnLogOut = document.getElementById('logOutBtn');
-// const txtFav = document.getElementById('fav');
-// const btnFav = document.getElementById('btnFav');
 
 var favArray = [];
 var dogArray = [];
@@ -39,13 +37,12 @@ btnLogin.addEventListener('click', e => {
     $("#signInError").empty();
     // Sign in
     const promise = auth.signInWithEmailAndPassword(email, pass);
-    promise.catch(e => 
+    promise.catch(e =>
         $("#signInError").append(e.message));
 })
 
 btnSignUp.addEventListener('click', e => {
     // Get email and pass
-    // TO DO: Validate email
     const email = txtEmail.value;
     const pass = txtPassword.value;
     const zip = txtZip.value;
@@ -86,14 +83,14 @@ firebase.auth().onAuthStateChanged(firebaseUser => {
         document.getElementById('secondPage').style.display = 'block';
         // set active user zip code
         database.ref('accounts/' + uid).on("value", function (snapshot) {
-            console.log("pulling zip " +  snapshot.val().zip);
-            zipToSearch =  snapshot.val().zip;
+            console.log("pulling zip " + snapshot.val().zip);
+            zipToSearch = snapshot.val().zip;
         });
         // Render to DOM each time the value changes
         database.ref('favorites/' + uid).on("value", function (snapshot) {
             $("#favorites").empty();
-             favArray = JSON.parse(snapshot.val().favorite);
-             for (let i = 0; i < favArray.length; i++) {
+            favArray = JSON.parse(snapshot.val().favorite);
+            for (let i = 0; i < favArray.length; i++) {
                 let dogInfo2 = $("<div>");
                 let dogImage2 = $("<img>").attr("src", favArray[i].image);
                 dogInfo2.append(dogImage2);
@@ -107,7 +104,7 @@ firebase.auth().onAuthStateChanged(firebaseUser => {
                 let dogAddress2 = $("<p>").innerHTML = favArray[i].address;
                 dogInfo2.append(dogAddress2);
                 dogInfo2.append("<br>");
-                let dogCityState2  = $("<p>").innerHTML = favArray[i].city;
+                let dogCityState2 = $("<p>").innerHTML = favArray[i].city;
                 dogInfo2.append(dogCityState2);
                 dogInfo2.append("<br>");
                 let dogPhone2 = $("<p>").innerHTML = favArray[i].phone;
@@ -121,11 +118,11 @@ firebase.auth().onAuthStateChanged(firebaseUser => {
                 dogInfo2.append(delTag);
 
                 $("#favorites").append(dogInfo2);
-                 
-             }
-         }, function (error) {
-             console.error(error);
-         });
+
+            }
+        }, function (error) {
+            console.error(error);
+        });
     } else {
         console.log('not logged in');
         // hide dog search area
@@ -139,13 +136,13 @@ firebase.auth().onAuthStateChanged(firebaseUser => {
 // btnFav.addEventListener("click", f => {
 //     const fav = txtFav.value;
 //     firebase.database().ref().child('favorites').child(uid).set({
-    //         favorite: fav
-    //     });
-    // })
+//         favorite: fav
+//     });
+// })
 
- // Clearing Sign In Info --------------------------------------------------------------
+// Clearing Sign In Info --------------------------------------------------------------
 
- function clearAll() {
+function clearAll() {
     document.getElementById('moreRescueBtn').style.display = 'none';
     document.getElementById('nextImage').style.display = 'none';
     document.getElementById('btnSearch').style.display = 'none';
@@ -163,13 +160,13 @@ firebase.auth().onAuthStateChanged(firebaseUser => {
     $("#wiki").empty();
     $("#rescueDogs").empty();
     $("#favorites").empty();
- }
+}
 
- window.onload = function() {
-clearAll();
+window.onload = function () {
+    clearAll();
 };
 
-$("#SignUpBtn").on("click", function() {
+$("#SignUpBtn").on("click", function () {
     document.getElementById('emailForm').style.display = 'block';
     document.getElementById('passwordForm').style.display = 'block';
     document.getElementById('zipForm').style.display = 'block';
@@ -181,7 +178,7 @@ $("#SignUpBtn").on("click", function() {
     $("#signInError").empty();
 });
 
-$("#signInBtn").on("click", function() {
+$("#signInBtn").on("click", function () {
     document.getElementById('loginSubmit').style.display = 'block';
     document.getElementById('emailForm').style.display = 'block';
     document.getElementById('passwordForm').style.display = 'block';
@@ -192,38 +189,37 @@ $("#signInBtn").on("click", function() {
     $('#signUpZip').val('');
     $("#signInError").empty();
 })
-    
-    
+
+
 //Petfinder -------------------------------------------------------------------------------------------------------------------------------------------------
 let count = 5;
 
 // Open drop down
-$("#dropdownMenuButton").on("click", function() {
+$("#dropdownMenuButton").on("click", function () {
     document.getElementById("dogDropDown").classList.toggle("show");
     document.getElementById("rescueContainer").style.visibility = 'hidden';
 });
 
 //close drop down
-window.onclick = function(event) {
+window.onclick = function (event) {
     if (!event.target.matches('.dropdown-toggle')) {
         var dropdowns = document.getElementsByClassName("dropdown-menu");
-    var i;
-    for (i = 0; i < dropdowns.length; i++) {
-      var openDropdown = dropdowns[i];
-      if (openDropdown.classList.contains('show')) {
-        openDropdown.classList.remove('show');
-      }
+        var i;
+        for (i = 0; i < dropdowns.length; i++) {
+            var openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
+            }
+        }
     }
-  }
 }
 
 // Get value from drop down
-$(".dropdown-item").on("click", function(){
+$(".dropdown-item").on("click", function () {
     $("#dogPic").empty();
     $("#wiki").empty();
     $("#rescueDogs").empty();
     selectBreed = this.textContent;
-    console.log(selectBreed);
     breed = selectBreed.toLowerCase();
     count = 5
     dogImageSearch();
@@ -231,10 +227,10 @@ $(".dropdown-item").on("click", function(){
     document.getElementById('moreRescueBtn').style.display = 'none';
     document.getElementById('nextImage').style.display = 'block';
     document.getElementById('btnSearch').style.display = 'block';
-   
+
 });
 
-$("#nextImage").on("click", function() {
+$("#nextImage").on("click", function () {
     dogImageSearch();
 });
 
@@ -256,34 +252,49 @@ function dogImageSearch() {
     })
 }
 
+// Run the image search again when it errors
+$(document).ajaxError(function(e, xhr, opt){
+    if (opt.url === ("https://dog.ceo/api/breed/" + breed + '/images/random')) {
+        dogImageSearch();
+    }
+});
+
 // Wiki API that finds summary text
 function dogWiki() {
-    $.ajax({
-        url: 'https://en.wikipedia.org/api/rest_v1/page/summary/' + breed,
-    }).then(function (response) {
-        console.log(response);
-        let dogSummary = $("<p>").innerHTML = response.extract
-        $("#wiki").append(dogSummary);
-    })
+    if (breed === "akita" || breed === "chihuahua" || breed === "maltese" || breed === "papillon" || breed === "pointer" || breed === "pomeranian" || breed === "samoyed ") {
+        $.ajax({
+            url: 'https://en.wikipedia.org/api/rest_v1/page/summary/' + breed + '_(dog)',
+        }).then(function (response) {
+            let dogSummary = $("<p>").innerHTML = response.extract
+            $("#wiki").append(dogSummary);
+        })
+    } else {
+        $.ajax({
+            url: 'https://en.wikipedia.org/api/rest_v1/page/summary/' + breed,
+        }).then(function (response) {
+            let dogSummary = $("<p>").innerHTML = response.extract
+            $("#wiki").append(dogSummary);
+        })
+    }
 }
 
 // Increases the search count by 5 in the petfinder API and re-runs the search function
-$("#moreRescueBtn").on("click", function() {
+$("#moreRescueBtn").on("click", function () {
     count = count + 5;
     rescueSearch();
 });
 
 // Adds favorite to favArray and adds to firebase
-$(document).on("click", "#btnFav", function() {
+$(document).on("click", "#btnFav", function () {
     let ind = this.dataset.index
     favArray.push(dogArray[ind]);
     firebase.database().ref().child('favorites').child(uid).set({
-                favorite: JSON.stringify(favArray),
-            });
-}); 
+        favorite: JSON.stringify(favArray),
+    });
+});
 
 // Removes from favArray and resets firebase
-$(document).on("click", "#btnDel", function() {
+$(document).on("click", "#btnDel", function () {
     console.log("click");
     let ind2 = this.dataset.index
     favArray.splice(ind2, 1);
@@ -298,8 +309,7 @@ function rescueSearch() {
     $.ajax({
         url: 'http://api.petfinder.com/pet.find?format=json&key=dd6e5fbe664a72d7558652f9ced0762f&animal=dog&location=' + zipToSearch + '&count=' + count + '&breed=' + selectBreed,
         dataType: 'jsonp',
-    }).then( function(response) {
-        console.log(response);
+    }).then(function (response) {
         for (let i = 0; i < response.petfinder.pets.pet.length; i++) {
             let dogInfo = $("<div>");
             let dogImage = $("<img>").attr("src", response.petfinder.pets.pet[i].media.photos.photo[3].$t);
@@ -314,7 +324,7 @@ function rescueSearch() {
             let dogAddress = $("<p>").innerHTML = response.petfinder.pets.pet[i].contact.address1.$t;
             dogInfo.append(dogAddress);
             dogInfo.append("<br>");
-            let dogCityState  = $("<p>").innerHTML = `${response.petfinder.pets.pet[i].contact.city.$t}, ${response.petfinder.pets.pet[i].contact.state.$t} ${response.petfinder.pets.pet[i].contact.zip.$t}`;
+            let dogCityState = $("<p>").innerHTML = `${response.petfinder.pets.pet[i].contact.city.$t}, ${response.petfinder.pets.pet[i].contact.state.$t} ${response.petfinder.pets.pet[i].contact.zip.$t}`;
             dogInfo.append(dogCityState);
             dogInfo.append("<br>");
             let dogPhone = $("<p>").innerHTML = response.petfinder.pets.pet[i].contact.phone.$t;
@@ -338,9 +348,7 @@ function rescueSearch() {
             }
 
             dogArray.push(dogList);
-            console.log(dogArray);
-
-            $("#rescueDogs").append(dogInfo); 
+            $("#rescueDogs").append(dogInfo);
         }
     })
 }
