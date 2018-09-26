@@ -154,6 +154,7 @@ function clearAll() {
     document.getElementById('loginSubmit').style.display = 'none';
     document.getElementById("rescueContainer").style.visibility = 'hidden';
     document.getElementById("favoriteContainer").style.display = 'none';
+    document.getElementById('secondPage').style.backgroundImage = 'url("assets/images/puppy.png")';
     $('#signUpName').val('');
     $('#signUpPassword').val('');
     $('#signUpZip').val('');
@@ -229,6 +230,7 @@ $(".dropdown-item").on("click", function () {
     document.getElementById('moreRescueBtn').style.display = 'none';
     document.getElementById('nextImage').style.display = 'block';
     document.getElementById('btnSearch').style.display = 'block';
+    document.getElementById('secondPage').style.backgroundImage = 'url("")';
 
 });
 
