@@ -118,6 +118,7 @@ firebase.auth().onAuthStateChanged(firebaseUser => {
                 dogInfo2.append(delTag);
 
                 $("#favorites").append(dogInfo2);
+                document.getElementById("favoriteContainer").style.display = 'block';
 
             }
         }, function (error) {
@@ -152,6 +153,7 @@ function clearAll() {
     document.getElementById('signUpSubmit').style.display = 'none';
     document.getElementById('loginSubmit').style.display = 'none';
     document.getElementById("rescueContainer").style.visibility = 'hidden';
+    document.getElementById("favoriteContainer").style.display = 'none';
     $('#signUpName').val('');
     $('#signUpPassword').val('');
     $('#signUpZip').val('');
