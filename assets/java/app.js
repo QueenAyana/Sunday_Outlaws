@@ -309,7 +309,7 @@ function rescueSearch() {
     dogArray = [];
     $("#rescueDogs").empty();
     $.ajax({
-        url: 'http://api.petfinder.com/pet.find?format=json&key=dd6e5fbe664a72d7558652f9ced0762f&animal=dog&location=' + zipToSearch + '&count=' + count + '&breed=' + selectBreed,
+        url: 'https://api.petfinder.com/pet.find?format=json&key=dd6e5fbe664a72d7558652f9ced0762f&animal=dog&location=' + zipToSearch + '&count=' + count + '&breed=' + selectBreed,
         dataType: 'jsonp',
     }).then(function (response) {
         for (let i = 0; i < response.petfinder.pets.pet.length; i++) {
