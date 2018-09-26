@@ -145,5 +145,6 @@ p {
 #secondPage {
     background-image: url("../images/puppy.png");
     background-repeat:   no-repeat;
-    background-position: center top 100px;  
+    background-position: center top 100px;
+    min-height: 800px;  
 }
