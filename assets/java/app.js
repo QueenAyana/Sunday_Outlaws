@@ -295,6 +295,7 @@ $(document).on("click", "#btnFav", function () {
     firebase.database().ref().child('favorites').child(uid).set({
         favorite: JSON.stringify(favArray),
     });
+    document.getElementById("favoriteContainer").style.visibility = "visible"
 });
 
 // Removes from favArray and resets firebase
@@ -305,6 +306,10 @@ $(document).on("click", "#btnDel", function () {
     firebase.database().ref().child('favorites').child(uid).set({
         favorite: JSON.stringify(favArray),
     });
+
+    if (favArray.length === 0) {
+        document.getElementById("favoriteContainer").style.visibility = 'hidden'
+    }
 })
 
 function rescueSearch() {
